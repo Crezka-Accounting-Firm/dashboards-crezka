@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal de Dashboards — Crezka</title>
+<style>
+  :root {
+    --primario: #16213E;
+    --acento: #14B8A6;
+    --fondo: #EAF6F5;
+    --tarjeta: #ffffff;
+    --texto: #1f2937;
+    --texto-sec: #6b7280;
+    --borde: #e5e7eb;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--fondo); color: var(--texto);
+  }
+  a { text-decoration: none; color: inherit; }
+  .contenedor { max-width: 1200px; margin: 0 auto; padding: 24px 16px 48px; }
+
+  header.portada {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px; padding: 12px 0 28px;
+  }
+  .marca { display: flex; align-items: center; gap: 14px; }
+  .marca .logo {
+    width: 48px; height: 48px; border-radius: 12px; background: var(--primario);
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 20px; letter-spacing: -1px;
+  }
+  .marca h1 { margin: 0; font-size: 26px; color: var(--primario); }
+  .marca p { margin: 2px 0 0; font-size: 13px; color: var(--texto-sec); }
+
+  .fecha-actual { font-size: 13px; color: var(--texto-sec); }
+
+  /* Grid de tarjetas */
+  .grid-clientes {
+    display: grid; gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .tarjeta-cliente {
+    background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 16px;
+    padding: 20px; display: flex; flex-direction: column; gap: 12px;
+    box-shadow: 0 2px 14px rgba(22,33,62,0.05);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .tarjeta-cliente:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(22,33,62,0.10); }
+
+  .tarjeta-cliente h3 {
+    margin: 0; font-size: 16px; font-weight: 700; color: var(--primario);
+  }
+
+  .tarjeta-cliente .tipo-negocio {
+    font-size: 12px; color: var(--acento); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+
+  .visual-mini { height: 90px; display: flex; align-items: center; justify-content: center; }
+
+  /* Mini dona decorativa con CSS */
+  .mini-dona {
+    width: 70px; height: 70px; border-radius: 50%;
+    background: conic-gradient(var(--primario) 0% 55%, var(--acento) 55% 100%);
+    position: relative;
+  }
+  .mini-dona::after {
+    content: ''; position: absolute; inset: 14px; border-radius: 50%; background: var(--tarjeta);
+  }
+
+  /* Mini barras decorativas */
+  .mini-barras { display: flex; align-items: flex-end; gap: 6px; height: 70px; }
+  .mini-barras span { width: 12px; border-radius: 4px 4px 0 0; background: var(--acento); }
+  .mini-barras span:nth-child(2n) { background: var(--primario); }
+
+  .tarjeta-cliente .dato-destacado {
+    display: flex; align-items: baseline; gap: 6px; font-size: 13px; color: var(--texto-sec);
+  }
+  .dato-destacado .valor { font-size: 22px; font-weight: 800; color: var(--primario); }
+  .dato-destacado.sube .valor { color: #16a34a; }
+  .dato-destacado.baja .valor { color: #dc2626; }
+
+  .btn-info {
+    align-self: flex-start; margin-top: 4px;
+    background: var(--primario); color: #fff; border: none;
+    padding: 8px 18px; border-radius: 999px; font-size: 13px; font-weight: 600;
+    cursor: pointer;
+  }
+  .tarjeta-cliente:hover .btn-info { background: var(--acento); }
+
+  /* Tarjeta "agregar cliente" */
+  .tarjeta-nueva {
+    border: 2px dashed var(--borde); border-radius: 16px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 8px; padding: 20px; color: var(--texto-sec); min-height: 200px;
+    text-align: center;
+  }
+  .tarjeta-nueva .icono-mas {
+    width: 44px; height: 44px; border-radius: 50%; border: 2px dashed var(--texto-sec);
+    display: flex; align-items: center; justify-content: center; font-size: 22px;
+  }
+  .tarjeta-nueva span.titulo { font-weight: 600; font-size: 14px; }
+  .tarjeta-nueva span.detalle { font-size: 12px; }
+
+  footer.pie {
+    text-align: center; color: var(--texto-sec); font-size: 12px; margin-top: 40px;
+  }
+</style>
+</head>
+<body>
+<div class="contenedor">
+
+  <header class="portada">
+    <div class="marca">
+      <div class="logo">dp</div>
+      <div>
+        <h1>Portal de Dashboards</h1>
+        <p>Crezka Firm · Panel de clientes</p>
+      </div>
+    </div>
+    <div class="fecha-actual" id="fechaActual"></div>
+  </header>
+
+  <div class="grid-clientes">
+
+    <!-- Tarjeta: Agencia de Publicidad (activa) -->
+    <a class="tarjeta-cliente" href="../agencia-publicidad/index.html">
+      <span class="tipo-negocio">Agencia de Publicidad</span>
+      <h3>Cobros y Pagos</h3>
+      <div class="visual-mini"><div class="mini-dona"></div></div>
+      <div class="dato-destacado baja">
+        <span class="valor">↓</span>
+        <span>Flujo neto: ver detalle en el dashboard</span>
+      </div>
+      <button class="btn-info">+ INFO</button>
+    </a>
+
+    <!-- Tarjeta placeholder: próximo cliente -->
+    <div class="tarjeta-nueva">
+      <div class="icono-mas">+</div>
+      <span class="titulo">Agregar nuevo cliente</span>
+      <span class="detalle">Clona la plantilla de dashboard y conéctala<br>a la hoja de Google Sheets del cliente</span>
+    </div>
+
+    <!-- Tarjeta placeholder: próximo cliente -->
+    <div class="tarjeta-nueva">
+      <div class="icono-mas">+</div>
+      <span class="titulo">Agregar nuevo cliente</span>
+      <span class="detalle">Cada cliente tiene su propio<br><code>config.js</code> y endpoint de Sheets</span>
+    </div>
+
+  </div>
+
+  <footer class="pie">
+    Crezka Firm — Portal interno de dashboards · Última actualización: <span id="fechaPie"></span>
+  </footer>
+</div>
+
+<script>
+  const ahora = new Date();
+  const opciones = { day: 'numeric', month: 'long', year: 'numeric' };
+  document.getElementById('fechaActual').textContent = ahora.toLocaleDateString('es-SV', opciones);
+  document.getElementById('fechaPie').textContent = ahora.toLocaleString('es-SV');
+</script>
+</body>
+</html>
